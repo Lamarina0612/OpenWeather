@@ -1,40 +1,83 @@
 // components/WeatherDisplay.js
 
 import React from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 
 const WeatherDisplay = ({ weatherData }) => {
   if (!weatherData) return null;
 
-  const { current, hourly, daily } = weatherData;
+  const { currentWeather, hourlyForecasts, dailyForecasts } = weatherData;
+
+  const weatherIconUrl = (icon) => {
+    return `https://openweathermap.org/img/wn/${icon}@2x.png`;
+  };
 
   return (
-    <div>
-      <h2>Current Weather</h2>
-      <p>Temperature: {current.temp}°C</p>
-      <p>Weather: {current.weather[0].description}</p>
+    <Box>
+      <Typography variant="h4" component="h2" gutterBottom>
+        Current Weather
+      </Typography>
+      <Card>
+        <CardContent>
+          <Typography variant="h5" component="p">
+            Temperature: {currentWeather.temp}°C
+          </Typography>
+          <Typography variant="body1" component="p">
+            Weather: {currentWeather.description}
+          </Typography>
+            <img src={weatherIconUrl(currentWeather.icon)} alt={currentWeather.description} />
+        </CardContent>
+      </Card>
 
-      <h2>Hourly Forecast</h2>
-      <div className="hourly-forecast">
-        {hourly.slice(0, 24).map((hour, index) => (
-          <div key={index}>
-            <p>Hour: {index + 1}</p>
-            <p>Temperature: {hour.temp}°C</p>
-            <p>Weather: {hour.weather[0].description}</p>
-          </div>
+      <Typography variant="h4" component="h2" gutterBottom mt={4}>
+        Hourly Forecast
+      </Typography>
+      <Grid container spacing={2}>
+        {hourlyForecasts.map((hour, index) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+            <Card>
+              <CardContent>
+                <Typography variant="h5" component="p">
+                  Hour: {index + 1}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  Temperature: {hour.temp}°C
+                </Typography>
+                <img src={weatherIconUrl(hour.icon)} alt={hour.description} />
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
+      </Grid>
 
-      <h2>Daily Forecast</h2>
-      <div className="daily-forecast">
-        {daily.slice(0, 7).map((day, index) => (
-          <div key={index}>
-            <p>Day: {index + 1}</p>
-            <p>Temperature: {day.temp.day}°C</p>
-            <p>Weather: {day.weather[0].description}</p>
-          </div>
+      <Typography variant="h4" component="h2" gutterBottom mt={4}>
+        Daily Forecast
+      </Typography>
+      <Grid container spacing={2}>
+        {dailyForecasts.map((day, index) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
+            <Card>
+              <CardContent>
+                <Typography variant="h5" component="p">
+                  Day: {index + 1}
+                </Typography>
+                <Typography variant="body1" component="p">
+                  Temperature: {day.temp}°C
+                </Typography>
+                <Typography variant="body1" component="p">
+                  Weather: {day.description}
+                </Typography>
+                <img src={weatherIconUrl(day.icon)} alt={day.description} />
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
-    </div>
+      </Grid>
+    </Box>
   );
 };
 
