@@ -3,12 +3,15 @@
 import React from "react";
 import "./App.css";
 import WeatherApp from "./components/WeatherApp";
+import NewsDisplay from './components/NewsDisplay';
+import { Container } from '@mui/material';
 
 function App() {
   return (
-    <div className="App">
+    <Container maxWidth="lg">
       <WeatherApp />
-    </div>
+      <NewsDisplay />
+    </Container>
   );
 }
 
